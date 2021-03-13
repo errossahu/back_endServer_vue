@@ -15,12 +15,62 @@ class Api extends RestController {
 
         parent::__construct();
         $this->load->model('m_api');
+
         
 
         
         
     }
+    public function login_post()
+    {
+    $nama = $this->post('email');
+    $password= $this->post('password');
+    $login= $this->m_api->login($nama , $password);
+       
+       if(!empty($login))
+       {
+          $data= $this->load->library('Authorization_Token');
+         
+          $token_data['id_user']=$login->id_user;
+          $token_data['email']=$login->email ;
+          $token_data['password']=$login->password ;
+          $user_token= $this->authorization_token->generateToken($token_data);
+          $value=[
+            'data'=>$login, 
+            'token'=>$user_token,
+          ];
+           return $this->response($value,200);
+       }
+
+    }
     // menampilkan user yang telah login 
+    public function listPesanan_get()
+    {
+        $data= $this->load->library('Authorization_Token');
+        if($this->authorization_Token->userData());
+        {
+            $data = $this->m_api->tampilData();
+        if($data)
+        {
+            return $this->response($data , 200);
+        }
+        } 
+        
+    }
+    public function totalPesanan_get()
+    {
+        $data = $this->m_api->listPesanan();
+        if($data)
+        {
+            return $this->response($data , 200);
+        }
+        if (empty($data))
+        {
+            $data = 0 ;
+            return $this->response($data,0);
+        }
+
+    }
     public function pesan_post()
     {
         $data = array(
@@ -40,7 +90,15 @@ class Api extends RestController {
     public function index_get()
     {
         $id_menu= $this->get('id_menu');
-        if($id_menu==null)
+        $data= $this->load->library('Authorization_Token');
+        $cek = $this->authorization_token->userData();
+        if($cek['status']==false)
+        {
+            return $this->response(
+                'TOKEN IS UNVALID',501)
+                
+;            }        
+            if($id_menu==null)
         {
             $data = $this->m_api->list_makanan();
             return $this->response($data , 200) ;
@@ -48,7 +106,10 @@ class Api extends RestController {
         else{
             $data = $this->m_api->detailMakanan($id_menu);
             return $this->response($data , 200);
-        }
+            }
+        
+    
+        
 
 
 

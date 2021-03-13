@@ -4,6 +4,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_api extends CI_Model {
 
+    public function tampilData()
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_pesan');
+        $this->db->join('tbl_menu', 'tbl_menu.id_menu = tbl_pesan.id_menu', 'left');
+        return $this->db->get()->result();
+        
+        
+    }
+    public function listPesanan()
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_pesan');
+        $this->db->join('tbl_menu', 'tbl_menu.id_menu = tbl_pesan.id_menu', 'left');
+        return $this->db->count_all_results();
+        
+        
+        
+        
+    }
     public function list_makanan()
     {
         $this->db->select('*');
@@ -50,6 +70,16 @@ class M_api extends CI_Model {
         
    
         return $this->db->get()->result() ; 
+        
+    }
+    public function login($n  , $p)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_users');
+        $this->db->where('email', $n);
+        $this->db->where('password', $p);
+        return $this->db->get()->row(); 
+        
         
     }
 }

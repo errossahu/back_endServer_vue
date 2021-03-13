@@ -275,7 +275,7 @@ $config['rest_ip_blacklist_enabled'] = false;
 | Prevent connections from the following IP addresses
 |
 | e.g: '123.456.789.0, 987.654.32.1'
-|
+|`
 */
 $config['rest_ip_blacklist'] = '';
 
@@ -311,11 +311,11 @@ $config['rest_keys_table'] = 'keys';
 |
 | Default table schema:
 |   CREATE TABLE `keys` (
-|       `id` INT(11) NOT NULL AUTO_INCREMENT,
-|       `user_id` INT(11) NOT NULL,
-|       `key` VARCHAR(40) NOT NULL,
-|       `level` INT(2) NOT NULL,
-|       `ignore_limits` TINYINT(1) NOT NULL DEFAULT '0',
+    |       `id` INT(11) NOT NULL AUTO_INCREMENT,
+    |       `user_id` INT(11) NOT NULL,
+    |       `key` VARCHAR(40) NOT NULL,
+    |       `level` INT(2) NOT NULL,
+    |       `ignore_limits` TINYINT(1) NOT NULL DEFAULT '0',
 |       `is_private_key` TINYINT(1)  NOT NULL DEFAULT '0',
 |       `ip_addresses` TEXT NULL DEFAULT NULL,
 |       `date_created` INT(11) NOT NULL,
