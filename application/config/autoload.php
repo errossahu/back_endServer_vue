@@ -104,7 +104,7 @@ $autoload['helper'] = array('file','form','url','download');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array();
+$autoload['config'] = array('jwt');
 
 /*
 | -------------------------------------------------------------------

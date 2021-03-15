@@ -8,7 +8,9 @@ class Api extends RestController {
     {
         header('Access-Control-Allow-Origin: *');
         header("Access-Control-Allow-Methods: GET, OPTIONS, POST, DELETE");
-        header("Access-Control-Allow-Headers: Content-Type, Content-Length, Accept-Encoding");     
+        header("Access-Control-Allow-Headers:Authorization, Content-Type, Content-Length, Accept-Encoding");     
+       
+
         if ( "OPTIONS" === $_SERVER['REQUEST_METHOD'] ) {
             die();
         }
@@ -46,15 +48,13 @@ class Api extends RestController {
     // menampilkan user yang telah login 
     public function listPesanan_get()
     {
-        $data= $this->load->library('Authorization_Token');
-        if($this->authorization_Token->userData());
-        {
-            $data = $this->m_api->tampilData();
+
+        $data = $this->m_api->tampilData();
         if($data)
         {
             return $this->response($data , 200);
         }
-        } 
+            
         
     }
     public function totalPesanan_get()
@@ -81,33 +81,31 @@ class Api extends RestController {
             if($data)
             {
              return  $this->response( 200);
-            }
+            }   
             else{
                return $this->response( 404);
             }
             
     }
+   
     public function index_get()
     {
-        $id_menu= $this->get('id_menu');
-        $data= $this->load->library('Authorization_Token');
-        $cek = $this->authorization_token->userData();
-        if($cek['status']==false)
-        {
-            return $this->response(
-                'TOKEN IS UNVALID',501)
-                
-;            }        
-            if($id_menu==null)
-        {
-            $data = $this->m_api->list_makanan();
-            return $this->response($data , 200) ;
+        // $id_menu= $this->get('id_menu');
+         $this->load->library('Authorization_Token');
+        $cek =  $this->authorization_token->userData();
+      
+        if($cek->id_user !=null){
+      
+                $data = $this->m_api->list_makanan();
+                return $this->response($data , 200) ;
+       
+       
+         }
+       else {
+            return $this->response($cek  , 404);
         }
-        else{
-            $data = $this->m_api->detailMakanan($id_menu);
-            return $this->response($data , 200);
-            }
-        
+    
+
     
         
 
